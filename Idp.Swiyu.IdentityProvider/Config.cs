@@ -14,8 +14,7 @@ public static class Config
     public static IEnumerable<ApiScope> ApiScopes =>
         new ApiScope[]
         {
-            new ApiScope("scope1"),
-            new ApiScope("scope2"),
+            new ApiScope("apiscope")
         };
 
     public static IEnumerable<Client> Clients =>
@@ -34,7 +33,7 @@ public static class Config
                 PostLogoutRedirectUris = { "https://localhost:7187/signout-callback-oidc" },
 
                 AllowOfflineAccess = true,
-                AllowedScopes = { "openid", "profile", "scope2" }
+                AllowedScopes = { "openid", "profile", "apiscope" }
             },
         };
 }

@@ -22,7 +22,7 @@ builder.Services.AddAuthentication(options =>
 {
     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.Scope.Add("profile");
-    options.Scope.Add("scope1");
+    options.Scope.Add("apiscope");
     options.Scope.Add("offline_access");
 
     var oidcConfig = builder.Configuration.GetSection("OpenIDConnectSettings");

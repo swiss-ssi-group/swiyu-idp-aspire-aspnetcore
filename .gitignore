@@ -416,3 +416,5 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+**/AspIdUsers.db**
+/Idp.Swiyu.IdentityProvider/keys/**
