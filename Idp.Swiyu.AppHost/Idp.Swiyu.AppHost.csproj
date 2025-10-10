@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Sdk Name="Aspire.AppHost.Sdk" Version="9.5.0" />
 
@@ -12,12 +12,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Idp.Swiyu.ApiService\Idp.Swiyu.ApiService.csproj" />
+    <ProjectReference Include="..\Idp.Swiyu.IdentityProvider\Idp.Swiyu.IdentityProvider.csproj" />
     <ProjectReference Include="..\Idp.Swiyu.Web\Idp.Swiyu.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.5.0" />
-    <PackageReference Include="Aspire.Hosting.Redis" Version="9.5.0" />
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.5.1" />
+    <PackageReference Include="Aspire.Hosting.Redis" Version="9.5.1" />
   </ItemGroup>
 
 </Project>

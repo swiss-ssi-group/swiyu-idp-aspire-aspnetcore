@@ -48,6 +48,11 @@ internal static class HostingExtensions
 
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
+        // Add service defaults & Aspire client integrations.
+        builder.AddServiceDefaults();
+        builder.AddRedisOutputCache("cache");
+
+
         builder.Services.AddRazorPages();
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
