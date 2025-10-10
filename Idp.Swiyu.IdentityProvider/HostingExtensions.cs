@@ -1,12 +1,13 @@
-using System.Globalization;
 using Duende.IdentityServer;
 using Idp.Swiyu.IdentityProvider.Data;
 using Idp.Swiyu.IdentityProvider.Models;
+using Idp.Swiyu.IdentityProvider.SwiyuServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Filters;
+using System.Globalization;
 
 namespace Idp.Swiyu.IdentityProvider;
 
@@ -52,8 +53,13 @@ internal static class HostingExtensions
         builder.AddServiceDefaults();
         builder.AddRedisOutputCache("cache");
 
-
+        builder.Services.AddScoped<VerificationService>();
+  
+        builder.Services.AddHttpClient();
+        builder.Services.AddOptions();
+        // Add services to the container.
         builder.Services.AddRazorPages();
+        builder.Services.AddControllers();
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -120,6 +126,8 @@ internal static class HostingExtensions
 
         app.MapRazorPages()
             .RequireAuthorization();
+
+        app.MapControllers();
 
         return app;
     }
