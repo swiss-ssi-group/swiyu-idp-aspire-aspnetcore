@@ -42,25 +42,6 @@ public class VerificationService
         return await SendCreateVerificationPostRequest(json);
     }
 
-    /// <summary>
-    /// curl - X POST http://localhost:8082/api/v1/verifications \
-    ///       -H "accept: application/json" \
-    ///       -H "Content-Type: application/json" \
-    ///       -d '
-    /// </summary>
-    public async Task<string> CreateDamienbodVerificationPresentationAsync()
-    {
-        _logger.LogInformation("Creating verification presentation");
-
-        var inputDescriptorsId = Guid.NewGuid().ToString();
-        var presentationDefinitionId = "00000000-0000-0000-0000-000000000000"; // Guid.NewGuid().ToString();
-
-        var json = GetDataForLocalCredential(inputDescriptorsId,
-           presentationDefinitionId, _issuerId!, "damienbod-vc");
-
-        return await SendCreateVerificationPostRequest(json);
-    }
-
     public async Task<VerificationManagementModel?> GetVerificationStatus(string verificationId)
     {
         var idEncoded = HttpUtility.UrlEncode(verificationId);
@@ -103,59 +84,6 @@ public class VerificationService
         _logger.LogError("Could not create verification presentation {vp}", error);
 
         throw new ArgumentException(error);
-    }
-
-    private static string GetDataForLocalCredential(string inputDescriptorsId, string presentationDefinitionId, string issuer, string vcType)
-    {
-        // jwt_secured_authorization_request disabled, need docs for this
-        var json = $$"""
-             {
-                 "accepted_issuer_dids": [ "{{issuer}}" ],
-                 "jwt_secured_authorization_request": true,
-                 "presentation_definition": {
-                     "id": "{{presentationDefinitionId}}",
-                     "name": "Verification",
-                     "purpose": "Verify damienbod VC",
-                     "input_descriptors": [
-                         {
-                             "id": "{{inputDescriptorsId}}",
-                             "format": {
-                                 "vc+sd-jwt": {
-                                     "sd-jwt_alg_values": [
-                                         "ES256"
-                                     ],
-                                     "kb-jwt_alg_values": [
-                                         "ES256"
-                                     ]
-                                 }
-                             },
-                             "constraints": {
-             	                "fields": [
-             		                {
-             			                "path": [ "$.vct" ],
-             			                "filter": {
-             				                "type": "string",
-             				                "const": "{{vcType}}"
-             			                }
-             		                },
-                                    {
-                                        "path": [ "$.firstName" ]
-                                    },
-                                    {
-                                        "path": [ "$.lastName" ]
-                                    },
-             		                {
-             			                "path": [ "$.birthDate" ]
-             		                }
-             	                ]
-                             }
-                         }
-                     ]
-                 }
-             }
-             """;
-
-        return json;
     }
 
     private static string GetBetaIdVerificationPresentationBody(string inputDescriptorsId, string presentationDefinitionId, string acceptedIssuerDid, string vcType)
