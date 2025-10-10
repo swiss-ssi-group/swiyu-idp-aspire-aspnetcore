@@ -22,7 +22,7 @@
     <PackageReference Include="Aspire.StackExchange.Redis.OutputCaching" Version="9.5.1" />
     
     <PackageReference Include="Net.Codecrete.QrCodeGenerator" Version="2.0.7" />
-    <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="14.7.0" />
+    <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="14.8.2" />
     
 	</ItemGroup>
 
