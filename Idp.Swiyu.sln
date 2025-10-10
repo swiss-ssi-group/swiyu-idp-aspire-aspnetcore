@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idp.Swiyu.ApiService", "Idp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idp.Swiyu.Web", "Idp.Swiyu.Web\Idp.Swiyu.Web.csproj", "{CE74C65E-961D-F73E-4BEF-FF656A981662}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idp.Swiyu.IdentityProvider", "Idp.Swiyu.IdentityProvider\Idp.Swiyu.IdentityProvider.csproj", "{4C1C66AE-F089-0A89-FE7F-A86DEC9A4148}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{CE74C65E-961D-F73E-4BEF-FF656A981662}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE74C65E-961D-F73E-4BEF-FF656A981662}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE74C65E-961D-F73E-4BEF-FF656A981662}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C1C66AE-F089-0A89-FE7F-A86DEC9A4148}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C1C66AE-F089-0A89-FE7F-A86DEC9A4148}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C1C66AE-F089-0A89-FE7F-A86DEC9A4148}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C1C66AE-F089-0A89-FE7F-A86DEC9A4148}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
