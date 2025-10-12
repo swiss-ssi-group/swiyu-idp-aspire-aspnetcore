@@ -124,6 +124,11 @@ public class VerificationService
              			                "path": [
              				                "$.birth_date"
              			                ]
+             		                },
+             		                {
+             			                "path": [
+             				                "$.given_name"
+             			                ]
              		                }
              	                ]
                              }
