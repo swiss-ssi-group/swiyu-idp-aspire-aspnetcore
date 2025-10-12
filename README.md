@@ -22,10 +22,10 @@
 
 Used data:  given_name, family_name, birth_date and birth_place.
 
-- User has already an account and would like to attach an E-ID for authentication
-- User registers
-- User validates authentication using E-ID
-- User password authentication disabled
+1. User has already an account and would like to attach an E-ID for authentication
+2. User registers
+3. User validates authentication using E-ID
+4. User password authentication disabled
 
 > Note: authentication uses E-ID is NOT phishing resistant. Passkeys would be better.
 
