@@ -18,6 +18,21 @@
 - swiyu
   - https://github.com/swiyu-admin-ch/swiyu-verifier
 
+## Register Flow
+
+Used data:  given_name, family_name, birth_date and birth_place.
+
+- User has already an account and would like to attach an E-ID for authentication
+- User registers
+- User validates authentication using E-ID
+- User password authentication disabled
+
+> Note: authentication uses E-ID is NOT phishing resistant. Passkeys would be better.
+
+## Authentication Flow
+
+## Recovery flow (name change)
+
 ## Links
 
 https://swiyu-admin-ch.github.io/cookbooks/how-to-use-beta-id/
