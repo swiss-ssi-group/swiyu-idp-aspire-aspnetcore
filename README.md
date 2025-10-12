@@ -2,7 +2,7 @@
 
 ## Architecture overview
 
-![Architecture](https://github.com/swiss-ssi-group/swiyu-aspire-aspnetcore/blob/main/images/overview.drawio.png)
+![Architecture](https://github.com/swiss-ssi-group/swiyu-idp-aspire-aspnetcore/blob/main/images/overview.drawio.png)
 
 ## Getting started:
 
