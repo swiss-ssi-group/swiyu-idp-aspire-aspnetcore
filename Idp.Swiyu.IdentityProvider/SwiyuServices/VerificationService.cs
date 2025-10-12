@@ -87,16 +87,15 @@ public class VerificationService
     }
 
     /// <summary>
+    /// There will be private companies having a need to do identification routines (e.g. KYC or before issuing another credential), 
+    /// asking for given_name, family_name, birth_date and birth_place.
+    /// 
     /// { "path": [ "$.birth_date" ] },
     /// { "path": ["$.given_name"] },
-    /// { "path": ["$.document_number"] },
     /// { "path": ["$.family_name"] },
     /// { "path": ["$.birth_place"] },
-    /// { "path": ["$.place_of_origin"] },
-    /// { "path": ["$.sex"] },
-    /// { "path": ["$.nationality"] }
-/// </summary>
-private static string GetBetaIdVerificationPresentationBody(string inputDescriptorsId, string presentationDefinitionId, string acceptedIssuerDid, string vcType)
+    /// </summary>
+    private static string GetBetaIdVerificationPresentationBody(string inputDescriptorsId, string presentationDefinitionId, string acceptedIssuerDid, string vcType)
     {
         var json = $$"""
              {
@@ -133,8 +132,7 @@ private static string GetBetaIdVerificationPresentationBody(string inputDescript
              		                { "path": [ "$.birth_date" ] },
              		                { "path": [ "$.given_name" ] },
                                     { "path": [ "$.family_name" ] },
-                                    { "path": [ "$.birth_place" ] },
-                                    { "path": [ "$.place_of_origin" ] }
+                                    { "path": [ "$.birth_place" ] }
              	                ]
                              }
                          }
