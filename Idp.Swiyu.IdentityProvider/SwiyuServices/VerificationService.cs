@@ -86,7 +86,17 @@ public class VerificationService
         throw new ArgumentException(error);
     }
 
-    private static string GetBetaIdVerificationPresentationBody(string inputDescriptorsId, string presentationDefinitionId, string acceptedIssuerDid, string vcType)
+    /// <summary>
+    /// { "path": [ "$.birth_date" ] },
+    /// { "path": ["$.given_name"] },
+    /// { "path": ["$.document_number"] },
+    /// { "path": ["$.family_name"] },
+    /// { "path": ["$.birth_place"] },
+    /// { "path": ["$.place_of_origin"] },
+    /// { "path": ["$.sex"] },
+    /// { "path": ["$.nationality"] }
+/// </summary>
+private static string GetBetaIdVerificationPresentationBody(string inputDescriptorsId, string presentationDefinitionId, string acceptedIssuerDid, string vcType)
     {
         var json = $$"""
              {
@@ -120,16 +130,11 @@ public class VerificationService
              				                "const": "{{vcType}}"
              			                }
              		                },
-             		                {
-             			                "path": [
-             				                "$.birth_date"
-             			                ]
-             		                },
-             		                {
-             			                "path": [
-             				                "$.given_name"
-             			                ]
-             		                }
+             		                { "path": [ "$.birth_date" ] },
+             		                { "path": [ "$.given_name" ] },
+                                    { "path": [ "$.family_name" ] },
+                                    { "path": [ "$.birth_place" ] },
+                                    { "path": [ "$.place_of_origin" ] }
              	                ]
                              }
                          }
