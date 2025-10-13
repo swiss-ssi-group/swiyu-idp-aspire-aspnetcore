@@ -50,23 +50,11 @@
 
                         <hr />
 
-                        <form asp-page="/Swiyu/Login">
-                            <input type="hidden" asp-for="Input.ReturnUrl" />
-
-                            @if (Model.View.AllowRememberLogin)
-                            {
-                                <div class="form-group">
-                                    <div class="form-check">
-                                        <input class="form-check-input" asp-for="Input.RememberLogin">
-                                        <label class="form-check-label" asp-for="Input.RememberLogin">
-                                            Remember My Login
-                                        </label>
-                                    </div>
-                                </div>
-                            }
-
-                            <button class="btn btn-primary" name="Input.Button" value="login">E-ID Login</button>
-                        </form>
+                        <a class="btn btn-primary"
+                           asp-page="/Swiyu/Login"
+                           asp-route-returnUrl="@Model.Input.ReturnUrl">
+                            E-ID Login
+                        </a>
                     </div>
                 </div>
             </div>

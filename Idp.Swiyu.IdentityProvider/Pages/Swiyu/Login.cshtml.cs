@@ -14,7 +14,6 @@ using System.Text.Json;
 
 namespace Idp.Swiyu.IdentityProvider.Pages.Login;
 
-[SecurityHeaders]
 [AllowAnonymous]
 public class LoginModel : PageModel
 {
@@ -62,14 +61,18 @@ public class LoginModel : PageModel
         QrCodeUrl = QrCodeUrl.Replace("{OID4VP_URL}", _swiyuOid4vpUrl);
     }
 
-    public void OnGet()
+    public async Task<IActionResult> OnGet(string? returnUrl)
     {
-    }
+        if (returnUrl != null)
+        {
+            // check if we are in the context of an authorization request
+            var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
 
-    public async Task<IActionResult> OnPost()
-    {
-        // check if we are in the context of an authorization request
-        var context = await _interaction.GetAuthorizationContextAsync(Input.ReturnUrl);
+            Input = new InputModel
+            {
+                ReturnUrl = returnUrl
+            };
+        }
 
         var presentation = await _verificationService
             .CreateBetaIdVerificationPresentationAsync();
@@ -82,6 +85,16 @@ public class LoginModel : PageModel
         QrCodePng = qrCode.ToPng(20, 4, MagickColors.Black, MagickColors.White);
 
         VerificationId = verificationResponse.id;
+
+        return Page();
+    }
+
+    public async Task<IActionResult> OnPost()
+    {
+        // check if we are in the context of an authorization request
+        var context = await _interaction.GetAuthorizationContextAsync(Input.ReturnUrl);
+
+        // TODO 
 
         return Page();
     }
