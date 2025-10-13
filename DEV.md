@@ -95,3 +95,13 @@ Use ImageMagick, other image libs are not container friendly
 
 https://github.com/manuelbl/QrCodeGenerator/tree/master/Demo-ImageMagick
 
+
+## Database
+
+```
+Add-Migration "init_identity_new" 
+```
+
+```
+Update-Database
+```
