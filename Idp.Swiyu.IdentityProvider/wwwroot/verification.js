@@ -17,7 +17,7 @@ if (verificationId != null) {
     let checkStatus = setInterval(function () {
         if (verificationId) {
 
-            fetch('api/status/verification-response?id=' + verificationId.value)
+            fetch('../api/status/verification-response?id=' + verificationId.value)
                 .then(response => response.text())
                 .catch(error => document.getElementById("message").innerHTML = error)
                 .then(response => {

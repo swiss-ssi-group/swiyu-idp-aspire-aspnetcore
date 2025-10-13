@@ -1,8 +1,10 @@
 ﻿using Idp.Swiyu.IdentityProvider.SwiyuServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Swiyu.Aspire.Mgmt.Controllers;
 
+[AllowAnonymous]
 [Route("api/[controller]")]
 [ApiController]
 public class StatusController : ControllerBase
