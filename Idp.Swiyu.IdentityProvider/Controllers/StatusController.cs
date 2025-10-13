@@ -5,6 +5,7 @@ using Idp.Swiyu.IdentityProvider.SwiyuServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 using System.Security.Claims;
 
@@ -48,7 +49,16 @@ public class StatusController : ControllerBase
 
                 var user = await _userManager.FindByEmailAsync(GetEmail(User.Claims)!);
 
-                // TODO check if swiyu already used somewhere
+                var exists = _applicationDbContext.SwiyuIdentity.FirstOrDefault(c =>
+                    c.BirthDate == verificationClaims.BirthDate &&
+                    c.BirthPlace == verificationClaims.BirthPlace &&
+                    c.GivenName == verificationClaims.GivenName &&
+                    c.FamilyName == verificationClaims.FamilyName);
+
+                if(exists != null)
+                {
+                    throw new Exception("Swiyu already in use and connected to an account...");
+                }
 
                 if (user != null && user.SwiyuIdentityId == null)
                 {

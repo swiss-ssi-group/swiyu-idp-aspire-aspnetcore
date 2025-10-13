@@ -4,6 +4,7 @@ using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
+using Idp.Swiyu.IdentityProvider.Data;
 using Idp.Swiyu.IdentityProvider.Models;
 using Idp.Swiyu.IdentityProvider.SwiyuServices;
 using ImageMagick;
@@ -30,6 +31,7 @@ public class LoginModel : PageModel
     private readonly IAuthenticationSchemeProvider _schemeProvider;
     private readonly IIdentityProviderStore _identityProviderStore;
     private readonly IHttpClientFactory _clientFactory;
+    private readonly ApplicationDbContext _applicationDbContext;
 
     [BindProperty]
     public string ReturnUrl { get; set; } = default!;
@@ -55,7 +57,8 @@ public class LoginModel : PageModel
         SignInManager<ApplicationUser> signInManager,
         VerificationService verificationService,
         IHttpClientFactory clientFactory,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        ApplicationDbContext applicationDbContext)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -65,6 +68,7 @@ public class LoginModel : PageModel
         _events = events;
 
         _clientFactory = clientFactory;
+        _applicationDbContext = applicationDbContext;
 
         _verificationService = verificationService;
         _swiyuOid4vpUrl = configuration["SwiyuOid4vpUrl"];
@@ -123,60 +127,31 @@ public class LoginModel : PageModel
                     new Claim("birth_date", verificationClaims.BirthDate)
                 };
 
-                var claimsIdentity = new ClaimsIdentity(
-                    claims,
-                    "Identity.Application", // scheme
-                    verificationClaims.GivenName,
-                    verificationClaims.FamilyName);
+                var exists = _applicationDbContext.SwiyuIdentity.FirstOrDefault(c =>
+                    c.BirthDate == verificationClaims.BirthDate &&
+                    c.BirthPlace == verificationClaims.BirthPlace &&
+                    c.GivenName == verificationClaims.GivenName &&
+                    c.FamilyName == verificationClaims.FamilyName);
 
-                var authProperties = new AuthenticationProperties();
-
-                //TODO switch to user login once the register process is complete
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
-
-                // var user = await _userManager.FindByNameAsync(Input.Username!);
-                // await _events.RaiseAsync(new UserLoginSuccessEvent(user!.UserName, user.Id, user.UserName, clientId: context?.Client.ClientId));
-                Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
-
-                if (context != null)
+                if (exists != null)
                 {
-                    // This "can't happen", because if the ReturnUrl was null, then the context would be null
-                    ArgumentNullException.ThrowIfNull(ReturnUrl, nameof(ReturnUrl));
+                    var user = await _userManager.FindByIdAsync(exists.UserId);
 
-                    if (context.IsNativeClient())
+                    // issue authentication cookie for user
+                    await _signInManager.SignInWithClaimsAsync(user, null, claims);
+
+                    if (context != null)
                     {
-                        // The client is native, so this change in how to
-                        // return the response is for better UX for the end user.
-                        return this.LoadingPage(ReturnUrl);
+                        if (context.IsNativeClient())
+                        {
+                            // The client is native, so this change in how to
+                            // return the response is for better UX for the end user.
+                            return this.LoadingPage(ReturnUrl);
+                        }
                     }
 
-                    // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                    return Redirect(ReturnUrl ?? "~/");
-                }
-
-                // request for a local page
-                if (Url.IsLocalUrl(ReturnUrl))
-                {
                     return Redirect(ReturnUrl);
                 }
-                else if (string.IsNullOrEmpty(ReturnUrl))
-                {
-                    return Redirect("~/");
-                }
-                else
-                {
-                    // user might have clicked on a malicious link - should be logged
-                    throw new ArgumentException("invalid return URL");
-                }
-                
-
-                const string error = "invalid credentials";
-                //await _events.RaiseAsync(new UserLoginFailureEvent(Username, error, clientId: context?.Client.ClientId));
-                Telemetry.Metrics.UserLoginFailure(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider, error);
-                ModelState.AddModelError(string.Empty, LoginOptions.InvalidCredentialsErrorMessage);
             }
         }
         catch (Exception ex)
