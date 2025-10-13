@@ -12,7 +12,7 @@
                 </div>
                 <div class="card-body">
                     <div>
-                        Register your swiyu first! <a class="btn btn-link" asp-page="/Swiyu/Login">Register E-ID</a>
+                        Register your swiyu first! <a class="btn btn-link" asp-page="/Swiyu/Register">Register E-ID</a>
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@
 
     @if (Model.VerificationId != null)
     {
-        <form method="post">
+        <form method="post" id="pollswiyu">
             <input type="hidden" asp-for="ReturnUrl" />
             <input type="hidden" asp-for="VerificationId" />
             <button type="submit" class="btn btn-outline-dark">Start polling</button>
