@@ -131,6 +131,7 @@ public class LoginModel : PageModel
 
                 var authProperties = new AuthenticationProperties();
 
+                //TODO switch to user login once the register process is complete
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity),
