@@ -60,7 +60,7 @@ public class StatusController : ControllerBase
                     throw new Exception("Swiyu already in use and connected to an account...");
                 }
 
-                if (user != null && user.SwiyuIdentityId == null)
+                if (user != null && user.SwiyuIdentityId <= 0)
                 {
                     var swiyuIdentity = new SwiyuIdentity
                     {
