@@ -1,4 +1,5 @@
 ﻿using Duende.IdentityModel;
+using Idp.Swiyu.IdentityProvider.Data;
 using Idp.Swiyu.IdentityProvider.Models;
 using Idp.Swiyu.IdentityProvider.SwiyuServices;
 using Microsoft.AspNetCore.Authorization;
@@ -15,12 +16,15 @@ public class StatusController : ControllerBase
 {
     private readonly VerificationService _verificationService;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ApplicationDbContext _applicationDbContext;
 
     public StatusController(VerificationService verificationService,
-        UserManager<ApplicationUser> userManager)
+        UserManager<ApplicationUser> userManager,
+        ApplicationDbContext applicationDbContext)
     {
         _verificationService = verificationService;
         _userManager = userManager;
+        _applicationDbContext = applicationDbContext;
     }
 
     [HttpGet("verification-response")]
@@ -43,8 +47,27 @@ public class StatusController : ControllerBase
                 var verificationClaims = _verificationService.GetVerifiedClaims(verificationModel);
 
                 var user = await _userManager.FindByEmailAsync(GetEmail(User.Claims)!);
+
+                // TODO check if swiyu already used somewhere
+
+                if (user != null && user.SwiyuIdentityId == null)
+                {
+                    var swiyuIdentity = new SwiyuIdentity
+                    {
+                        UserId = user.Id,
+                        BirthDate = verificationClaims.BirthDate,
+                        FamilyName = verificationClaims.FamilyName,
+                        BirthPlace = verificationClaims.BirthPlace,
+                        GivenName = verificationClaims.GivenName,
+                        Email = user.Email!
+                    };
+
+                    // Save to DB
+                    user.SwiyuIdentityId = swiyuIdentity.Id;
+
+                    await _applicationDbContext.SaveChangesAsync();
+                }
             }
-            
 
             return Ok(verificationModel);
         }
