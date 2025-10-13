@@ -1,21 +1,21 @@
 ﻿
-$(document).ready(function () {
-    //dom is ready
+const verificationId = document.getElementById('verificationId');
+const form = document.getElementById("pollSwiyu");
+const buttonPollSwiyu = document.getElementById("buttonPollSwiyu");
 
-    const form = document.getElementById("pollSwiyu");
-    const buttonPollSwiyu = document.getElementById("buttonPollSwiyu");
 
-    function pollSwiyuSubmit(e) {
-        e.preventDefault();
+if (verificationId != null) {
 
-        if (form) {
-            form.submit();
+    let checkStatus = setInterval(function () {
+        if (verificationId) {
+
+            alert("hi")
+            if (form) {
+                form.submit();
+            }
+            clearInterval(checkStatus)
+
         }
- 
-        return false;
-    }
 
-    if (buttonPollSwiyu) {
-        buttonPollSwiyu.onclick = pollSwiyuSubmit;
-    }
-});
+    }, 1500);
+}

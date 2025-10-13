@@ -35,10 +35,14 @@
 
     @if (Model.VerificationId != null)
     {
-        <form method="post" id="pollswiyu">
+        <form method="post" id="pollSwiyu" name="pollSwiyu">
             <input type="hidden" asp-for="ReturnUrl" />
-            <input type="hidden" asp-for="VerificationId" />
-            <button type="submit" class="btn btn-outline-dark">Start polling</button>
+            <input type="hidden" id="verificationId" name="verificationId"  asp-for="VerificationId" />
+            <button type="submit" id="buttonPollSwiyu" name="buttonPollSwiyu" class="btn btn-outline-dark">Start polling</button>
         </form>
     }
 </div>
+
+@section scripts {
+    <script src="~/login-swiyu.js"></script>
+}
