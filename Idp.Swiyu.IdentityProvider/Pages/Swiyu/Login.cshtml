@@ -12,16 +12,8 @@
                 </div>
                 <div class="card-body">
                     <div>
-                        <form method="post">
-                            <button type="submit" class="btn btn-outline-dark">Verify your swiyu public Beta-ID</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div>
                         <a href="https://www.bcs.admin.ch/bcs-web/">Get your swiyu public Beta-ID credentials here</a>
                     </div>
-
                 </div>
                 <div class="card-footer">
 
@@ -62,6 +54,12 @@
 
     @if (Model.VerificationId != null)
     {
+        <form method="post">
+            <input type="hidden" asp-for="Input.ReturnUrl" />
+            <input type="hidden" asp-for="VerificationId" />
+            <button type="submit" class="btn btn-outline-dark">Start polling</button>
+        </form>
+
         <div class="row justify-content-center mt-4">
             <div class="col-md-8">
                 <div class="card shadow-sm">
@@ -107,7 +105,3 @@
         </div>
     }
 </div>
-
-@section scripts {
-    <script src="~/verification.js"></script>
-}

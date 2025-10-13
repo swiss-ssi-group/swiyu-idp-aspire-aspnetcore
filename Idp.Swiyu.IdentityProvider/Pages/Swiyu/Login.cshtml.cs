@@ -1,3 +1,5 @@
+using Duende.IdentityModel.Client;
+using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
 using Idp.Swiyu.IdentityProvider.Models;
@@ -23,6 +25,7 @@ public class LoginModel : PageModel
     private readonly IEventService _events;
     private readonly IAuthenticationSchemeProvider _schemeProvider;
     private readonly IIdentityProviderStore _identityProviderStore;
+    private readonly IHttpClientFactory _clientFactory;
 
     [BindProperty]
     public InputModel Input { get; set; } = default!;
@@ -47,6 +50,7 @@ public class LoginModel : PageModel
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         VerificationService verificationService,
+        IHttpClientFactory clientFactory,
         IConfiguration configuration)
     {
         _userManager = userManager;
@@ -55,6 +59,8 @@ public class LoginModel : PageModel
         _schemeProvider = schemeProvider;
         _identityProviderStore = identityProviderStore;
         _events = events;
+
+        _clientFactory = clientFactory;
 
         _verificationService = verificationService;
         _swiyuOid4vpUrl = configuration["SwiyuOid4vpUrl"];
@@ -91,11 +97,50 @@ public class LoginModel : PageModel
 
     public async Task<IActionResult> OnPost()
     {
+        VerificationClaims verificationClaims = null;
+        try
+        {
+            if (VerificationId == null)
+            {
+                return BadRequest(new { error = "400", error_description = "Missing argument 'VerificationId'" });
+            }
+
+            var verificationModel = await RequestSwiyuClaimsAsync(1, VerificationId);
+
+            verificationClaims = _verificationService.GetVerifiedClaims(verificationModel);
+            
+            // TODO
+            // Check user is registered
+            // signin
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { error = "400", error_description = ex.Message });
+        }
+
         // check if we are in the context of an authorization request
         var context = await _interaction.GetAuthorizationContextAsync(Input.ReturnUrl);
 
-        // TODO 
-
         return Page();
+    }
+
+    internal async Task<VerificationManagementModel> RequestSwiyuClaimsAsync(int interval, string verificationId)
+    {
+        var client = _clientFactory.CreateClient();
+
+        while (true)
+        {
+            
+            var verificationModel = await _verificationService.GetVerificationStatus(verificationId);
+
+            if (verificationModel != null && verificationModel.state == "SUCCESS")
+            {
+                return verificationModel;
+            }
+            else
+            {
+                await Task.Delay(interval * 1000);
+            }
+        }
     }
 }

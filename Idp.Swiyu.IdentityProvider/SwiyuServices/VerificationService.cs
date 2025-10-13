@@ -68,6 +68,33 @@ public class VerificationService
         throw new ArgumentException(error);
     }
 
+    /// <summary>
+    /// In a business app we can use the data from the verificationModel
+    /// Verification data:
+    /// Use: wallet_response/credential_subject_data
+    ///
+    /// birth_date, given_name, family_name, birth_place
+    /// 
+    /// </summary>
+    /// <param name="verificationManagementModel"></param>
+    /// <returns></returns>
+    public VerificationClaims GetVerifiedClaims(VerificationManagementModel verificationManagementModel)
+    {
+        var json = verificationManagementModel.wallet_response!.credential_subject_data!.ToString();
+
+        var jsonElement = JsonDocument.Parse(json!).RootElement;
+
+        var claims = new VerificationClaims
+        {
+            BirthDate = jsonElement.GetProperty("birth_date").ToString(),
+            BirthPlace = jsonElement.GetProperty("birth_place").ToString(),
+            FamilyName = jsonElement.GetProperty("family_name").ToString(),
+            GivenName = jsonElement.GetProperty("given_name").ToString()
+        };
+
+        return claims;
+    }
+
     private async Task<string> SendCreateVerificationPostRequest(string json)
     {
         var jsonContent = new StringContent(json, Encoding.UTF8, "application/json");
