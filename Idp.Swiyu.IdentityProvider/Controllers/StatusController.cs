@@ -1,8 +1,11 @@
-﻿using Idp.Swiyu.IdentityProvider.Models;
+﻿using Duende.IdentityModel;
+using Idp.Swiyu.IdentityProvider.Models;
 using Idp.Swiyu.IdentityProvider.SwiyuServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mail;
+using System.Security.Claims;
 
 namespace Swiyu.Aspire.Mgmt.Controllers;
 
@@ -39,8 +42,7 @@ public class StatusController : ControllerBase
                 // Use: wallet_response/credential_subject_data
                 var verificationClaims = _verificationService.GetVerifiedClaims(verificationModel);
 
-                var email = User.Claims.FirstOrDefault(c => c.Type == "email");
-                var user = await _userManager.FindByEmailAsync(email.Value);
+                var user = await _userManager.FindByEmailAsync(GetEmail(User.Claims)!);
             }
             
 
@@ -50,5 +52,57 @@ public class StatusController : ControllerBase
         {
             return BadRequest(new { error = "400", error_description = ex.Message });
         }
+    }
+
+    public static string? GetEmail(IEnumerable<Claim> claims)
+    {
+        var email = claims.FirstOrDefault(t => t.Type == ClaimTypes.Email);
+
+        if (email != null)
+        {
+            return email.Value;
+        }
+
+        email = claims.FirstOrDefault(t => t.Type == JwtClaimTypes.Email);
+
+        if (email != null)
+        {
+            return email.Value;
+        }
+
+        email = claims.FirstOrDefault(t => t.Type == "preferred_username");
+
+        if (email != null)
+        {
+            var isNameAndEmail = IsEmailValid(email.Value);
+            if (isNameAndEmail)
+            {
+                return email.Value;
+            }
+        }
+
+        return null;
+    }
+
+    public static bool IsEmailValid(string email)
+    {
+        if (!MailAddress.TryCreate(email, out var mailAddress))
+            return false;
+
+        // And if you want to be more strict:
+        var hostParts = mailAddress.Host.Split('.');
+        if (hostParts.Length == 1)
+            return false; // No dot.
+        if (hostParts.Any(p => p == string.Empty))
+            return false; // Double dot.
+        if (hostParts[^1].Length < 2)
+            return false; // TLD only one letter.
+
+        if (mailAddress.User.Contains(' '))
+            return false;
+        if (mailAddress.User.Split('.').Any(p => p == string.Empty))
+            return false; // Double dot or dot at end of user part.
+
+        return true;
     }
 }
