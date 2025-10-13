@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Net.Codecrete.QrCodeGenerator;
 using System.Text.Json;
 
-namespace Idp.Swiyu.IdentityProvider.Pages;
+namespace Idp.Swiyu.IdentityProvider.Pages.Swiyu;
 
 public class RegisterSwiyuModel : PageModel
 {
