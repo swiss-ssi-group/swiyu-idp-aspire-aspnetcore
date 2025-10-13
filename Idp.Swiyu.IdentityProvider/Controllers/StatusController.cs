@@ -1,19 +1,23 @@
-﻿using Idp.Swiyu.IdentityProvider.SwiyuServices;
+﻿using Idp.Swiyu.IdentityProvider.Models;
+using Idp.Swiyu.IdentityProvider.SwiyuServices;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Swiyu.Aspire.Mgmt.Controllers;
 
-[AllowAnonymous]
 [Route("api/[controller]")]
 [ApiController]
 public class StatusController : ControllerBase
 {
     private readonly VerificationService _verificationService;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public StatusController(VerificationService verificationService)
+    public StatusController(VerificationService verificationService,
+        UserManager<ApplicationUser> userManager)
     {
         _verificationService = verificationService;
+        _userManager = userManager;
     }
 
     [HttpGet("verification-response")]
@@ -28,9 +32,16 @@ public class StatusController : ControllerBase
 
             var verificationModel = await _verificationService.GetVerificationStatus(id);
 
-            // In a business app we can use the data from the verificationModel
-            // Verification data:
-            // Use: wallet_response/credential_subject_data
+            if (verificationModel != null && verificationModel.state == "SUCCESS")
+            {
+                // In a business app we can use the data from the verificationModel
+                // Verification data:
+                // Use: wallet_response/credential_subject_data
+                var verificationClaims = _verificationService.GetVerifiedClaims(verificationModel);
+
+                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            }
+            
 
             return Ok(verificationModel);
         }
