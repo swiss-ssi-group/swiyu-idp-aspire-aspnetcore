@@ -9,7 +9,7 @@ using System.Text.Json;
 namespace Idp.Swiyu.IdentityProvider.Pages.Swiyu;
 
 [Authorize]
-public class RegisterSwiyuModel : PageModel
+public class RegisterModel : PageModel
 {
     private readonly VerificationService _verificationService;
     private readonly string? _swiyuOid4vpUrl;
@@ -23,7 +23,7 @@ public class RegisterSwiyuModel : PageModel
     [BindProperty]
     public byte[] QrCodePng { get; set; } = [];
 
-    public RegisterSwiyuModel(VerificationService verificationService,
+    public RegisterModel(VerificationService verificationService,
         IConfiguration configuration)
     {
         _verificationService = verificationService;

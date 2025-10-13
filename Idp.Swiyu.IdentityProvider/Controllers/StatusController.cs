@@ -72,6 +72,8 @@ public class StatusController : ControllerBase
                         Email = user.Email!
                     };
 
+                    _applicationDbContext.SwiyuIdentity.Add(swiyuIdentity);
+
                     // Save to DB
                     user.SwiyuIdentityId = swiyuIdentity.Id;
 
