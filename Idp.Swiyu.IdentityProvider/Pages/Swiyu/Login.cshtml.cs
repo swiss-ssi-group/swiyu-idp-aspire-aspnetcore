@@ -1,4 +1,6 @@
 using Duende.IdentityModel.Client;
+using Duende.IdentityServer;
+using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
@@ -6,12 +8,14 @@ using Idp.Swiyu.IdentityProvider.Models;
 using Idp.Swiyu.IdentityProvider.SwiyuServices;
 using ImageMagick;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.VisualBasic;
 using Net.Codecrete.QrCodeGenerator;
+using System.Security.Claims;
 using System.Text.Json;
 
 namespace Idp.Swiyu.IdentityProvider.Pages.Login;
@@ -28,7 +32,7 @@ public class LoginModel : PageModel
     private readonly IHttpClientFactory _clientFactory;
 
     [BindProperty]
-    public InputModel Input { get; set; } = default!;
+    public string ReturnUrl { get; set; } = default!;
 
     private readonly VerificationService _verificationService;
     private readonly string? _swiyuOid4vpUrl;
@@ -40,7 +44,7 @@ public class LoginModel : PageModel
     public string? QrCodeUrl { get; set; } = string.Empty;
 
     [BindProperty]
-    public byte[] QrCodePng { get; set; } = [];
+    public byte[]? QrCodePng { get; set; } = [];
 
     public LoginModel(
         IIdentityServerInteractionService interaction,
@@ -74,10 +78,7 @@ public class LoginModel : PageModel
             // check if we are in the context of an authorization request
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
 
-            Input = new InputModel
-            {
-                ReturnUrl = returnUrl
-            };
+            ReturnUrl = returnUrl;
         }
 
         var presentation = await _verificationService
@@ -108,18 +109,79 @@ public class LoginModel : PageModel
             var verificationModel = await RequestSwiyuClaimsAsync(1, VerificationId);
 
             verificationClaims = _verificationService.GetVerifiedClaims(verificationModel);
-            
-            // TODO
-            // Check user is registered
-            // signin
+
+            // check if we are in the context of an authorization request
+            var context = await _interaction.GetAuthorizationContextAsync(ReturnUrl);
+
+            if (ModelState.IsValid)
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim("name", verificationClaims.GivenName),
+                    new Claim("family_name", verificationClaims.FamilyName),
+                    new Claim("birth_place", verificationClaims.BirthPlace),
+                    new Claim("birth_date", verificationClaims.BirthDate)
+                };
+
+                var claimsIdentity = new ClaimsIdentity(
+                    claims,
+                    "Identity.Application", // scheme
+                    verificationClaims.GivenName,
+                    verificationClaims.FamilyName);
+
+                var authProperties = new AuthenticationProperties();
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
+
+                // var user = await _userManager.FindByNameAsync(Input.Username!);
+                // await _events.RaiseAsync(new UserLoginSuccessEvent(user!.UserName, user.Id, user.UserName, clientId: context?.Client.ClientId));
+                Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
+
+                if (context != null)
+                {
+                    // This "can't happen", because if the ReturnUrl was null, then the context would be null
+                    ArgumentNullException.ThrowIfNull(ReturnUrl, nameof(ReturnUrl));
+
+                    if (context.IsNativeClient())
+                    {
+                        // The client is native, so this change in how to
+                        // return the response is for better UX for the end user.
+                        return this.LoadingPage(ReturnUrl);
+                    }
+
+                    // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
+                    return Redirect(ReturnUrl ?? "~/");
+                }
+
+                // request for a local page
+                if (Url.IsLocalUrl(ReturnUrl))
+                {
+                    return Redirect(ReturnUrl);
+                }
+                else if (string.IsNullOrEmpty(ReturnUrl))
+                {
+                    return Redirect("~/");
+                }
+                else
+                {
+                    // user might have clicked on a malicious link - should be logged
+                    throw new ArgumentException("invalid return URL");
+                }
+                
+
+                const string error = "invalid credentials";
+                //await _events.RaiseAsync(new UserLoginFailureEvent(Username, error, clientId: context?.Client.ClientId));
+                Telemetry.Metrics.UserLoginFailure(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider, error);
+                ModelState.AddModelError(string.Empty, LoginOptions.InvalidCredentialsErrorMessage);
+            }
         }
         catch (Exception ex)
         {
             return BadRequest(new { error = "400", error_description = ex.Message });
         }
-
-        // check if we are in the context of an authorization request
-        var context = await _interaction.GetAuthorizationContextAsync(Input.ReturnUrl);
 
         return Page();
     }
