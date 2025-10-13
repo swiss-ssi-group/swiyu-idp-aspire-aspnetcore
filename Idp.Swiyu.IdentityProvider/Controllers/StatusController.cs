@@ -39,7 +39,8 @@ public class StatusController : ControllerBase
                 // Use: wallet_response/credential_subject_data
                 var verificationClaims = _verificationService.GetVerifiedClaims(verificationModel);
 
-                var user = await _userManager.FindByNameAsync(User.Identity.Name);
+                var email = User.Claims.FirstOrDefault(c => c.Type == "email");
+                var user = await _userManager.FindByEmailAsync(email.Value);
             }
             
 
