@@ -1,5 +1,6 @@
 using Idp.Swiyu.IdentityProvider.SwiyuServices;
 using ImageMagick;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Net.Codecrete.QrCodeGenerator;
@@ -7,6 +8,7 @@ using System.Text.Json;
 
 namespace Idp.Swiyu.IdentityProvider.Pages.Swiyu;
 
+[Authorize]
 public class RegisterSwiyuModel : PageModel
 {
     private readonly VerificationService _verificationService;
