@@ -31,7 +31,13 @@ Used data:  given_name, family_name, birth_date and birth_place.
 
 ## Authentication Flow
 
+> Note: authentication uses E-ID is NOT phishing resistant. Passkeys would be better.
+
 ## Recovery flow (name change)
+
+## 2FA flow
+
+## Password reset flow
 
 ## Links
 
