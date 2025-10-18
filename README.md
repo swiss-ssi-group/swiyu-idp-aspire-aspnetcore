@@ -2,6 +2,8 @@
 
 ## Architecture overview
 
+A Duende identity server is used as an OpenID Connect server for web applications. When the user authenticates, the Swiss E-ID can be used to authenticate.
+
 ![Architecture](https://github.com/swiss-ssi-group/swiyu-idp-aspire-aspnetcore/blob/main/images/overview.drawio.png)
 
 ## Getting started:
