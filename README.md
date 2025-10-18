@@ -3,7 +3,7 @@
 ## Architecture overview
 
 A Duende identity server is used as an OpenID Connect server for web applications. When the user authenticates, the Swiss E-ID can be used to authenticate.
-The applications are implemented using Aspire, ASP.NET Core and the Swiss public beta generic containers. The containers implement the OpenID verifiable credential standards and provide a simple API to integrate applications. Using Swiyu is simple, but not a good way of doing authentication as it is not phishing resitant.
+The applications are implemented using Aspire, ASP.NET Core and the Swiss public beta generic containers. The containers implement the OpenID verifiable credential standards and provide a simple API to integrate applications. Using swiyu is simple, but not a good way of doing authentication as it is not phishing resistant.
 
 ![Architecture](https://github.com/swiss-ssi-group/swiyu-idp-aspire-aspnetcore/blob/main/images/overview.drawio.png)
 
