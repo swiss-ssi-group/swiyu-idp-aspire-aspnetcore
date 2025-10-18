@@ -10,10 +10,6 @@
 - [Dev docs](DEV.md)
 - [Changelog](CHANGELOG.md)
 
-## History
-
-- 2020-10-18 Updates packages
-
 ## Used OSS packages, containers, repositories 
 
 - ImageMagick: https://github.com/manuelbl/QrCodeGenerator/tree/master/Demo-ImageMagick
