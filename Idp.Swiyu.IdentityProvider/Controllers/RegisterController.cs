@@ -13,13 +13,13 @@ namespace Swiyu.Aspire.Mgmt.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class StatusController : ControllerBase
+public class RegisterController : ControllerBase
 {
     private readonly VerificationService _verificationService;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly ApplicationDbContext _applicationDbContext;
 
-    public StatusController(VerificationService verificationService,
+    public RegisterController(VerificationService verificationService,
         UserManager<ApplicationUser> userManager,
         ApplicationDbContext applicationDbContext)
     {
