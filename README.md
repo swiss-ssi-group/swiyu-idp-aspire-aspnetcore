@@ -1,5 +1,7 @@
 # Swiyu identity provider using Aspire and ASP.NET Core
 
+[![.NET](https://github.com/swiss-ssi-group/swiyu-idp-aspire-aspnetcore/actions/workflows/dotnet.yml/badge.svg)](https://github.com/swiss-ssi-group/swiyu-idp-aspire-aspnetcore/actions/workflows/dotnet.yml)
+
 ## Architecture overview
 
 A Duende identity server is used as an OpenID Connect server for web applications. When the user authenticates, the Swiss E-ID can be used to authenticate.
