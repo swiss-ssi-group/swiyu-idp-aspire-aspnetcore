@@ -1,7 +1,3 @@
-using Duende.IdentityModel.Client;
-using Duende.IdentityServer;
-using Duende.IdentityServer.Events;
-using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
 using Idp.Swiyu.IdentityProvider.Data;
@@ -9,12 +5,10 @@ using Idp.Swiyu.IdentityProvider.Models;
 using Idp.Swiyu.IdentityProvider.SwiyuServices;
 using ImageMagick;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.VisualBasic;
 using Net.Codecrete.QrCodeGenerator;
 using System.Security.Claims;
 using System.Text.Json;
@@ -137,7 +131,7 @@ public class LoginModel : PageModel
                 {
                     var user = await _userManager.FindByIdAsync(exists.UserId);
 
-                    if(user == null)
+                    if (user == null)
                     {
                         // This should return a user message with no info what went wrong.
                         throw new ArgumentNullException("error in authentication");
@@ -174,7 +168,7 @@ public class LoginModel : PageModel
 
         while (true)
         {
-            
+
             var verificationModel = await _verificationService.GetVerificationStatus(verificationId);
 
             if (verificationModel != null && verificationModel.state == "SUCCESS")

@@ -1,5 +1,3 @@
-using static System.Net.WebRequestMethods;
-
 var builder = DistributedApplication.CreateBuilder(args);
 
 var IDENTITY_PROVIDER = "identityProvider";

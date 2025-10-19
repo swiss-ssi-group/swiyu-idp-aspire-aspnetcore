@@ -2,10 +2,8 @@
 using Idp.Swiyu.IdentityProvider.Data;
 using Idp.Swiyu.IdentityProvider.Models;
 using Idp.Swiyu.IdentityProvider.SwiyuServices;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 using System.Security.Claims;
 
@@ -55,7 +53,7 @@ public class RegisterController : ControllerBase
                     c.GivenName == verificationClaims.GivenName &&
                     c.FamilyName == verificationClaims.FamilyName);
 
-                if(exists != null)
+                if (exists != null)
                 {
                     throw new Exception("Swiyu already in use and connected to an account...");
                 }

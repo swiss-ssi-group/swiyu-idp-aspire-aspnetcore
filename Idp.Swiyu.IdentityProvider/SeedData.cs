@@ -1,10 +1,10 @@
-using System.Security.Claims;
 using Duende.IdentityModel;
 using Idp.Swiyu.IdentityProvider.Data;
 using Idp.Swiyu.IdentityProvider.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using System.Security.Claims;
 
 namespace Idp.Swiyu.IdentityProvider;
 

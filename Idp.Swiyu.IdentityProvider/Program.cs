@@ -1,8 +1,8 @@
-using System.Globalization;
-using System.Text;
 using Duende.IdentityServer.Licensing;
 using Idp.Swiyu.IdentityProvider;
 using Serilog;
+using System.Globalization;
+using System.Text;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)

@@ -9,6 +9,6 @@ public class SwiyuIdentity
     public string BirthPlace { get; set; } = null!;
     public string BirthDate { get; set; } = null!;
 
-    public string UserId { get; set; } = null!; 
+    public string UserId { get; set; } = null!;
     public string Email { get; set; } = null!;
 }

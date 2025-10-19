@@ -1,5 +1,4 @@
-﻿using Idp.Swiyu.IdentityProvider.SwiyuServices;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Idp.Swiyu.IdentityProvider.SwiyuServices;
 

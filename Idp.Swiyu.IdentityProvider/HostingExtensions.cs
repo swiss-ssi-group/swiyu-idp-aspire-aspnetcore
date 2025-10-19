@@ -1,10 +1,8 @@
-using Duende.IdentityServer;
 using Idp.Swiyu.IdentityProvider.Data;
 using Idp.Swiyu.IdentityProvider.Models;
 using Idp.Swiyu.IdentityProvider.SwiyuServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Filters;
 using System.Globalization;
@@ -54,7 +52,7 @@ internal static class HostingExtensions
         builder.AddRedisOutputCache("cache");
 
         builder.Services.AddScoped<VerificationService>();
-  
+
         builder.Services.AddHttpClient();
         builder.Services.AddOptions();
         // Add services to the container.
