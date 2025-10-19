@@ -137,6 +137,12 @@ public class LoginModel : PageModel
                 {
                     var user = await _userManager.FindByIdAsync(exists.UserId);
 
+                    if(user == null)
+                    {
+                        // This should return a user message with no info what went wrong.
+                        throw new ArgumentNullException("error in authentication");
+                    }
+
                     // issue authentication cookie for user
                     await _signInManager.SignInWithClaimsAsync(user, null, claims);
 
