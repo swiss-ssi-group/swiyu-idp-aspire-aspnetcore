@@ -1,4 +1,4 @@
-# Swiyu identity provider using Aspire and ASP.NET Core
+# Use swiyu with Duende identity provider using Aspire and ASP.NET Core
 
 [![.NET](https://github.com/swiss-ssi-group/swiyu-idp-aspire-aspnetcore/actions/workflows/dotnet.yml/badge.svg)](https://github.com/swiss-ssi-group/swiyu-idp-aspire-aspnetcore/actions/workflows/dotnet.yml)
 
