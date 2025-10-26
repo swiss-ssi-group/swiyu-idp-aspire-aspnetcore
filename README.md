@@ -52,3 +52,34 @@ https://swiyu-admin-ch.github.io/cookbooks/how-to-use-beta-id/
 
 https://swiyu-admin-ch.github.io/cookbooks/onboarding-generic-verifier/
 
+https://swiyu-admin-ch.github.io/
+
+https://www.eid.admin.ch/en/public-beta-e
+
+https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview
+
+https://www.npmjs.com/package/ngrok
+
+https://swiyu-admin-ch.github.io/specifications/interoperability-profile/
+
+https://andrewlock.net/converting-a-docker-compose-file-to-aspire/
+
+https://swiyu-admin-ch.github.io/cookbooks/onboarding-generic-verifier/
+
+https://github.com/orgs/swiyu-admin-ch/projects/2/views/2
+
+Standards
+
+https://identity.foundation/trustdidweb/
+
+https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html
+
+https://openid.net/specs/openid-4-verifiable-presentations-1_0.html
+
+https://datatracker.ietf.org/doc/draft-ietf-oauth-selective-disclosure-jwt/
+
+https://datatracker.ietf.org/doc/draft-ietf-oauth-sd-jwt-vc/
+
+https://datatracker.ietf.org/doc/draft-ietf-oauth-status-list/
+
+https://www.w3.org/TR/vc-data-model-2.0/
