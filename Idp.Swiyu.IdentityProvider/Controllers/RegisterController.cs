@@ -55,7 +55,7 @@ public class RegisterController : ControllerBase
 
                 if (exists != null)
                 {
-                    throw new Exception("Swiyu already in use and connected to an account...");
+                    throw new Exception("swiyu already in use and connected to an account...");
                 }
 
                 if (user != null && user.SwiyuIdentityId <= 0)
