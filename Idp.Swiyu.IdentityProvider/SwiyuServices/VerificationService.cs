@@ -158,8 +158,8 @@ public class VerificationService
              		                },
              		                { "path": [ "$.birth_date" ] },
              		                { "path": [ "$.given_name" ] },
-                                    { "path": [ "$.family_name" ] },
-                                    { "path": [ "$.birth_place" ] }
+             		                { "path": [ "$.family_name" ] },
+             		                { "path": [ "$.birth_place" ] }
              	                ]
                              }
                          }
