@@ -2,7 +2,7 @@
 
 [![.NET](https://github.com/swiss-ssi-group/swiyu-idp-aspire-aspnetcore/actions/workflows/dotnet.yml/badge.svg)](https://github.com/swiss-ssi-group/swiyu-idp-aspire-aspnetcore/actions/workflows/dotnet.yml)
 
-[Use swiyu, the Swiss E-ID to authenticate users with Duende and .NET Aspire](https://damienbod.com)
+[Use swiyu, the Swiss E-ID to authenticate users with Duende and .NET Aspire](https://damienbod.com/2025/10/27/use-swiyu-the-swiss-e-id-to-authenticate-users-with-duende-and-net-aspire/)
 
 ## Architecture overview
 
