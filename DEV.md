@@ -10,8 +10,7 @@ Aspire is used to develop and implement the applications. Four container applica
 
 ### swiyu containers
 
-- ghcr.io/swiyu-admin-ch/eidch-verifier-agent-oid4vp
-- ghcr.io/swiyu-admin-ch/eidch-verifier-agent-management
+- ghcr.io/swiyu-admin-ch/swiyu-verifier
 
 ## Database
 
@@ -35,7 +34,14 @@ Support: usertesting@swiyu.admin.ch
   "client_name#de": "Entwicklungs-Demo-Verifizierer (Fallback DE)",
   "client_name": "Swiyu.Aspire Swiyu Demo Verifier (Base)",
   "logo_uri": "www.example.com/logo.png",
-  "logo_uri#fr": "www.example.com/logo_fr.png"
+  "logo_uri#fr": "www.example.com/logo_fr.png",
+  "vp_formats": {
+	  "jwt_vp": {
+		"alg": [
+		  "ES256"
+		]
+	  }
+	}
 }
 ```
 
