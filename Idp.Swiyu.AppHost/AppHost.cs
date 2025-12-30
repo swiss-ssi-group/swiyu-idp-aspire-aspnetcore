@@ -6,11 +6,8 @@ var CACHE = "cache";
 
 const string HTTP = "http";
 
-// public
-IResourceBuilder<ContainerResource>? swiyuOid4vp = null;
-
 // management
-IResourceBuilder<ContainerResource>? swiyuVerifierMgmt = null;
+IResourceBuilder<ContainerResource>? swiyuVerifier = null;
 IResourceBuilder<ProjectResource>? identityProvider = null;
 
 var postGresUser = builder.AddParameter("postgresuser");
@@ -32,41 +29,35 @@ var didVerifierMethod = builder.AddParameter("didverifiermethod");
 var verifierName = builder.AddParameter("verifiername");
 var verifierSigningKey = builder.AddParameter("verifiersigningkey", true);
 
-// Verifier: Must be deployed to a public URL
-//swiyuOid4vp = builder.AddContainer("swiyu-oid4vp", "ghcr.io/swiyu-admin-ch/eidch-verifier-agent-oid4vp", "latest")
-//    .WithEnvironment("EXTERNAL_URL", verifierExternalUrl)
-//    .WithEnvironment("OPENID_CLIENT_METADATA_FILE", verifierOpenIdClientMetaDataFile)
-//    .WithEnvironment("VERIFIER_DID", verifierDid)
-//    .WithEnvironment("DID_VERIFICATION_METHOD", didVerifierMethod)
-//    .WithEnvironment("VERIFIER_NAME", verifierName)
-//    .WithEnvironment("SIGNING_KEY", verifierSigningKey)
-//    .WithEnvironment("POSTGRES_USER", postGresUser)
-//    .WithEnvironment("POSTGRES_PASSWORD", postGresPassword)
-//    .WithEnvironment("POSTGRES_DB", postGresDbVerifier)
-//    .WithEnvironment("POSTGRES_JDBC", postGresJdbcVerifier)
-//    .WithHttpEndpoint(port: 80, targetPort: 8080, name: HTTP)
-//    .WithExternalHttpEndpoints();
-
-swiyuVerifierMgmt = builder.AddContainer("swiyu-verifier-mgmt", "ghcr.io/swiyu-admin-ch/eidch-verifier-agent-management", "latest")
-    .WithEnvironment("OID4VP_URL", verifierExternalUrl)
+/////////////////////////////////////////////////////////////////
+// Verifier OpenID Endpoint: Must be deployed to a public URL
+/////////////////////////////////////////////////////////////////
+// Verifier Management Endpoint: TODO Add JWT security verifier
+// Add security to management API, disabled
+// https://github.com/swiyu-admin-ch/swiyu-verifier?tab=readme-ov-file#security
+/////////////////////////////////////////////////////////////////
+swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/swiyu-verifier", "latest")
+    .WithEnvironment("EXTERNAL_URL", verifierExternalUrl)
+    .WithEnvironment("OPENID_CLIENT_METADATA_FILE", verifierOpenIdClientMetaDataFile)
+    .WithEnvironment("VERIFIER_DID", verifierDid)
+    .WithEnvironment("DID_VERIFICATION_METHOD", didVerifierMethod)
+    .WithEnvironment("SIGNING_KEY", verifierSigningKey)
     .WithEnvironment("POSTGRES_USER", postGresUser)
     .WithEnvironment("POSTGRES_PASSWORD", postGresPassword)
     .WithEnvironment("POSTGRES_DB", postGresDbVerifier)
     .WithEnvironment("POSTGRES_JDBC", postGresJdbcVerifier)
-#if DEBUG
-      .WithHttpEndpoint(port: 8084, targetPort: 8080, name: HTTP);  // local development
-#else
-      .WithHttpEndpoint(port: 80, targetPort: 8080, name: HTTP); // for deployment 
-#endif
+    .WithHttpEndpoint(port: 8084, targetPort: 8080, name: HTTP)  // local development
+    //.WithHttpEndpoint(port: 80, targetPort: 8080, name: HTTP) // for deployment 
+    .WithExternalHttpEndpoints();
 
 identityProvider = builder.AddProject<Projects.Idp_Swiyu_IdentityProvider>(IDENTITY_PROVIDER)
     .WithExternalHttpEndpoints()
     .WithReference(cache)
     .WaitFor(cache)
-    .WithEnvironment("SwiyuVerifierMgmtUrl", swiyuVerifierMgmt.GetEndpoint(HTTP))
+    .WithEnvironment("SwiyuVerifierMgmtUrl", swiyuVerifier.GetEndpoint(HTTP))
     .WithEnvironment("SwiyuOid4vpUrl", verifierExternalUrl)
     .WithEnvironment("ISSUER_ID", issuerId)
-    .WaitFor(swiyuVerifierMgmt);
+    .WaitFor(swiyuVerifier);
 
 builder.AddProject<Projects.Idp_Swiyu_Web>(WEB_CLIENT)
     .WithExternalHttpEndpoints()
