@@ -1,7 +1,7 @@
 using Duende.IdentityModel;
-using Idp.Swiyu.Passkeys.Sts.Data;
-using Idp.Swiyu.Passkeys.Sts.Models;
-using Idp.Swiyu.Passkeys.Sts.SwiyuServices;
+using Idp.Swiyu.IdentityProvider.Data;
+using Idp.Swiyu.IdentityProvider.Models;
+using Idp.Swiyu.IdentityProvider.SwiyuServices;
 using ImageMagick;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,7 +12,7 @@ using System.Net.Mail;
 using System.Security.Claims;
 using System.Text.Json;
 
-namespace Idp.Swiyu.Passkeys.Sts.Pages.Swiyu;
+namespace Idp.Swiyu.IdentityProvider.Pages.Swiyu;
 
 [Authorize]
 public class RegisterModel : PageModel

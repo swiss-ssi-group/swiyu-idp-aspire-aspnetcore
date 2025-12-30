@@ -13,7 +13,7 @@ using Net.Codecrete.QrCodeGenerator;
 using System.Security.Claims;
 using System.Text.Json;
 
-namespace Idp.Swiyu.IdentityProvider.Pages.Login;
+namespace Idp.Swiyu.IdentityProvider.Pages.Swiyu;
 
 [AllowAnonymous]
 public class LoginModel : PageModel

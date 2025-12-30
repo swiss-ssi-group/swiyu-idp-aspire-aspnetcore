@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Idp.Swiyu.Passkeys.Sts.Pages.Swiyu
+namespace Idp.Swiyu.IdentityProvider.Pages.Swiyu;
+
+public class IdentityAlreadyVerifiedModel : PageModel
 {
-    public class IdentityAlreadyVerifiedModel : PageModel
+    public void OnGet()
     {
-        public void OnGet()
-        {
-        }
     }
 }
