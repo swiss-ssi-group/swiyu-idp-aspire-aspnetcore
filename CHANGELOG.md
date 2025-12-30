@@ -1,6 +1,9 @@
 
 # Change log
 
+## 2025-12-30 
+- Updated to latest swiyu containers
+
 ## 2025-12-14 
 - .NET 10
 
