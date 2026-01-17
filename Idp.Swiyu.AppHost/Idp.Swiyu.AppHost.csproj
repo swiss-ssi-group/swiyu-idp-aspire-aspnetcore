@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Idp.Swiyu.IdentityProvider\Idp.Swiyu.IdentityProvider.csproj" />
     <ProjectReference Include="..\Idp.Swiyu.Web\Idp.Swiyu.Web.csproj" />
+    <ProjectReference Include="..\Swiyu.Endpoints.Proxy\Swiyu.Endpoints.Proxy.csproj" />
   </ItemGroup>
 
   <ItemGroup>
