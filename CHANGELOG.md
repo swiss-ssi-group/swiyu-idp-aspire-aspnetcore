@@ -1,6 +1,9 @@
 
 # Change log
 
+## 2026-01-17 
+- Added Proxy for swiyu services
+
 ## 2025-12-30 
 - Updated to latest swiyu containers
 
