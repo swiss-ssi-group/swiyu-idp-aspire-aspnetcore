@@ -16,7 +16,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\Idp.Swiyu.Passkeys.ServiceDefaults\Idp.Swiyu.Passkeys.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\Idp.Swiyu.ServiceDefaults\Idp.Swiyu.ServiceDefaults.csproj" />
   </ItemGroup>
+ 
 
 </Project>
