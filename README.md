@@ -8,6 +8,16 @@
 - [Use swiyu, the Swiss E-ID to authenticate users with Duende and .NET Aspire](https://damienbod.com/2025/10/27/use-swiyu-the-swiss-e-id-to-authenticate-users-with-duende-and-net-aspire/)
 - [Implement MFA using swiyu, the Swiss E-ID with Duende IdentityServer, ASP.NET Core Identity and .NET Aspire](https://damienbod.com/2025/11/10/implement-mfa-using-swiyu-the-swiss-e-id-with-duende-identityserver-asp-net-core-identity-and-net-aspire/)
 
+## Blogs loa, loi
+- [Digital authentication and identity validation](https://damienbod.com/2025/12/20/digital-authentication-and-identity-validation/)
+- [Set the amr claim when using passkeys authentication in ASP.NET Core](https://damienbod.com/2026/01/05/set-the-amr-claim-when-using-passkeys-authentication-in-asp-net-core/)
+- [Implementing Level of Authentication (LoA) with ASP.NET Core Identity and Duende](https://damienbod.com/2026/01/12/implementing-level-of-authentication-loa-with-asp-net-core-identity-and-duende/)
+- [Implementing Level of Identification (LoI) with ASP.NET Core Identity and Duende](https://damienbod.com/2026/01/18/implementing-level-of-identification-loi-with-asp-net-core-identity-and-duende/)
+- [Force step up authentication in web applications](https://damienbod.com/2026/01/26/force-step-up-authentication-in-web-applications/)
+- [Use client assertions in ASP.NET Core using OpenID Connect, OAuth DPoP and OAuth PAR](https://damienbod.com/2026/02/02/use-client-assertions-in-asp-net-core-using-openid-connect-oauth-dpop-and-oauth-par/)
+- [Secure the swiyu container using a YARP proxy](https://damienbod.com/2026/02/09/isolate-the-swiyu-public-beta-management-apis-using-yarp/)
+- [Add Application security to the swiyu generic management verifier APIs using OAuth](https://damienbod.com)
+
 ## Architecture overview
 
 A Duende identity server is used as an OpenID Connect server for web applications. When the user authenticates, the Swiss E-ID can be used to authenticate.
