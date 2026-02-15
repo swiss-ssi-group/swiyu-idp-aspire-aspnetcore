@@ -1,6 +1,9 @@
 
 # Change log
 
+## 2026-02-15 
+- Updated packages
+
 ## 2026-01-17 
 - Added Proxy for swiyu services
 
