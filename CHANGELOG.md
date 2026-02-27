@@ -1,6 +1,11 @@
 
 # Change log
 
+## 2026-02-27 1.0.0
+- Updated packages
+- data:image/png;base64
+- Fixed nonce issue, updated swiyu
+
 ## 2026-02-15 
 - Updated packages
 
