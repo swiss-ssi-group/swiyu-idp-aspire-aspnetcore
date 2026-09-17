@@ -4,6 +4,8 @@
 ## 2026-09-17 2.0.0
 - Updated packages
 - Swiyu 4.2.0
+- Fix multi-line parameters, Aspire deployments and user secrets do not support this
+- All Nuget packages updated to latest versions, 10.0.12
 
 ## 2026-05-16 1.0.2
 - Updated packages
