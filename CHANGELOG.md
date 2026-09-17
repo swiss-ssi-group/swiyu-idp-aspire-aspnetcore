@@ -1,6 +1,10 @@
 
 # Change log
 
+## 2026-09-17 2.0.0
+- Updated packages
+- Swiyu 4.2.0
+
 ## 2026-05-16 1.0.2
 - Updated packages
 
