@@ -21,13 +21,16 @@
 
     @if (Model.QrCodePng!.Length > 0)
     {
-        <h5 class="card-title">Scan with your swiyu wallet</h5>
-        <div class="swiyu-qr-wrapper">
-            <img alt="QR code for swiyu verification"
-                 src="data:image/png;base64,@System.Convert.ToBase64String(Model.QrCodePng)"
-                 class="img-fluid" />
+        <h5 class="row justify-content-center">Scan with your swiyu wallet</h5>
+        <div class="row justify-content-center mt-4">
+            
+            <div class="swiyu-qr-wrapper">
+                <img alt="QR code for swiyu verification"
+                     src="data:image/png;base64,@System.Convert.ToBase64String(Model.QrCodePng)"
+                     class="img-fluid" />
+            </div>
         </div>
-        <div>
+        <div class="row justify-content-center">
             <a class="swiyu-deeplink" href="@Model.DeepLink">Open in wallet</a>
         </div>
     }
