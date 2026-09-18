@@ -1,7 +1,7 @@
 
 # Change log
 
-## 2026-09-17 2.0.0
+## 2026-09-18 2.0.0
 - Updated packages
 - Swiyu 4.2.0
 - Fix multi-line parameters, Aspire deployments and user secrets do not support this
