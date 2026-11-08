@@ -7,7 +7,7 @@
 - Updated configuration definitions
 - Using java didtoolbox 2.2.1 for SD-JWT and OpenID Connect EAP
 - Using Swiyu Sandbox for identity verification and KYC processes
-- 
+
 ## 2026-09-18 2.0.0
 - Updated packages
 - Swiyu 4.2.0
