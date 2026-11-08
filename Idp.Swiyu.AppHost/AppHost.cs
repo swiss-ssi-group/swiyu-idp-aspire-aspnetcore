@@ -13,50 +13,71 @@ IResourceBuilder<ContainerResource>? swiyuVerifier = null;
 IResourceBuilder<ProjectResource>? identityProvider = null;
 IResourceBuilder<ProjectResource>? swiyuProxy = null; 
 
-var postGresUser = builder.AddParameter("postgresuser");
-var postGresPassword = builder.AddParameter("postgrespassword", secret: true);
-var postGresDbIssuer = builder.AddParameter("postgresdbissuer");
-var postGresJdbcIssuer = builder.AddParameter("postgresjdbcissuer");
-var postGresDbVerifier = builder.AddParameter("postgresdbverifier");
-var postGresJdbcVerifier = builder.AddParameter("postgresjdbcverifier");
-
 var cache = builder.AddRedis(CACHE);
 
-var issuerId = builder.AddParameter("issuerid");
+var ISSUER_ID = builder.AddParameter("IssuerId");
 
-// Verifier
-var verifierExternalUrl = builder.AddParameter("verifierexternalurl");
-var verifierOpenIdClientMetaDataFile = builder.AddParameter("verifieropenidclientmetadatafile");
-var verifierDid = builder.AddParameter("verifierdid");
-var didVerifierMethod = builder.AddParameter("didverifiermethod");
-var verifierName = builder.AddParameter("verifiername");
-var verifierSigningKeyBase64 = builder.AddParameter("verifiersigningkeybase64", secret: true);
+var SWIYU_PARTNER_ID = builder.AddParameter("SwiyuBusinessPartnerId", secret: true);
+var SWIYU_STATUS_REGISTRY_CUSTOMER_KEY = builder.AddParameter("SwiyuCustomerKey", secret: true);
+var SWIYU_STATUS_REGISTRY_CUSTOMER_SECRET = builder.AddParameter("SwiyuCustomerSecret", secret: true);
+var SWIYU_STATUS_REGISTRY_BOOTSTRAP_REFRESH_TOKEN = builder.AddParameter("SwiyuRefreshToken", secret: true);
+var SWIYU_STATUS_REGISTRY_ACCESS_TOKEN = builder.AddParameter("SwiyuAccessToken", secret: true);
 
-var idpWellKnownEndpoint = builder.AddParameter("idpwellknownendpoint");
-var idpJwksUri = builder.AddParameter("idpjwksuri");
-var swiyuMgmtJwtIssuer = builder.AddParameter("verifierjwtissuer");
+// issuer and verifier
+var SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI = builder.AddParameter("SwiyuSpringSecurityOauth2JwtIssuer");
 
-var verifierSigningKeyBase64Value = await verifierSigningKeyBase64.Resource.GetValueAsync(default);
-var verifierSigningKey = Encoding.UTF8.GetString(Convert.FromBase64String((verifierSigningKeyBase64Value ?? string.Empty)));
+// Verifier configuration parameters
+var VERIFIER_POSTGRES_USER = builder.AddParameter("VerifierPostGresUser");
+var VERIFIER_POSTGRES_PASSWORD = builder.AddParameter("VerifierPostGresPassword", secret: true);
+var VERIFIER_POSTGRES_DB = builder.AddParameter("VerifierPostGresDb");
+var VERIFIER_POSTGRES_JDBC = builder.AddParameter("VerifierPostGresJdbc");
+
+var VERIFIER_EXTERNAL_URL = builder.AddParameter("VerifierExternalUrl");
+var VERIFIER_OPENID_CLIENT_METADATA_FILE = builder.AddParameter("VerifierOpenidClientMetadataFile");
+var VERIFIER_DID = builder.AddParameter("VerifierDid");
+var VERIFIER_DID_VERIFICATION_METHOD = builder.AddParameter("VerifierDidVerificationMethod");
+var VERIFIER_NAME = builder.AddParameter("VerifierName");
+
+var VERIFIER_SIGNING_KEY_BASE64 = builder.AddParameter("VerifierSigningKeyBase64", secret: true);
+var verifierSigningKeyBase64Value = await VERIFIER_SIGNING_KEY_BASE64.Resource.GetValueAsync(default);
+var VERIFIER_SIGNING_KEY = Encoding.UTF8.GetString(Convert.FromBase64String((verifierSigningKeyBase64Value ?? string.Empty)));
+
+var VERIFIER_SWIYU_TRUST_REGISTRY_API_URL = "https://trust-reg.trust-infra.swiyu-int.admin.ch";
+var VERIFIER_SWIYU_TRUST_ISSUER_DID = VERIFIER_DID;
+
+// Trust Registry credentials from the API self-service portal (swiyucorebusiness_trust).
+var SWIYU_TMS_AUTHORING_URL = "https://trust-reg-api.trust-infra.swiyu-int.admin.ch";
+var SWIYU_TMS_OAUTH_TOKEN_URL = "https://keymanager-prd.api.admin.ch/keycloak/realms/APIGW/protocol/openid-connect/token";
+var SWIYU_TMS_OAUTH_CLIENT_ID = SWIYU_STATUS_REGISTRY_CUSTOMER_KEY;
+var SWIYU_TMS_OAUTH_CLIENT_SECRET = SWIYU_STATUS_REGISTRY_CUSTOMER_SECRET;
+var SWIYU_TMS_BOOTSTRAP_REFRESH_TOKEN = SWIYU_STATUS_REGISTRY_BOOTSTRAP_REFRESH_TOKEN;
 
 /////////////////////////////////////////////////////////////////
 // Verifier OpenID Endpoint: Must be deployed to a public URL
 /////////////////////////////////////////////////////////////////
-// Verifier Management Endpoint: TODO Add JWT security verifier
-// Add security to management API, disabled
 // https://github.com/swiyu-admin-ch/swiyu-verifier?tab=readme-ov-file#security
 /////////////////////////////////////////////////////////////////
-swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/swiyu-verifier", "4.2.0")
-    .WithEnvironment("EXTERNAL_URL", verifierExternalUrl)
-    .WithEnvironment("OPENID_CLIENT_METADATA_FILE", verifierOpenIdClientMetaDataFile)
-    .WithEnvironment("VERIFIER_DID", verifierDid)
-    .WithEnvironment("DID_VERIFICATION_METHOD", didVerifierMethod)
-    .WithEnvironment("SIGNING_KEY", verifierSigningKey)
-    .WithEnvironment("POSTGRES_USER", postGresUser)
-    .WithEnvironment("POSTGRES_PASSWORD", postGresPassword)
-    .WithEnvironment("POSTGRES_DB", postGresDbVerifier)
-    .WithEnvironment("POSTGRES_JDBC", postGresJdbcVerifier)
-    .WithEnvironment("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI", swiyuMgmtJwtIssuer)
+swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/swiyu-verifier", "5.0.1")
+    .WithEnvironment("EXTERNAL_URL", VERIFIER_EXTERNAL_URL)
+    .WithEnvironment("OPENID_CLIENT_METADATA_FILE", VERIFIER_OPENID_CLIENT_METADATA_FILE)
+    .WithEnvironment("VERIFIER_DID", VERIFIER_DID)
+    .WithEnvironment("DID_VERIFICATION_METHOD", VERIFIER_DID_VERIFICATION_METHOD)
+    .WithEnvironment("SIGNING_KEY", VERIFIER_SIGNING_KEY)
+    .WithEnvironment("POSTGRES_USER", VERIFIER_POSTGRES_USER)
+    .WithEnvironment("POSTGRES_PASSWORD", VERIFIER_POSTGRES_PASSWORD)
+    .WithEnvironment("POSTGRES_DB", VERIFIER_POSTGRES_DB)
+    .WithEnvironment("POSTGRES_JDBC", VERIFIER_POSTGRES_JDBC)
+
+    .WithEnvironment("SWIYU_TRUST_REGISTRY_API_URL", VERIFIER_SWIYU_TRUST_REGISTRY_API_URL)
+    .WithEnvironment("SWIYU_TRUST_ISSUER_DID", VERIFIER_SWIYU_TRUST_ISSUER_DID)
+
+    .WithEnvironment("SWIYU_TMS_AUTHORING_URL", SWIYU_TMS_AUTHORING_URL)
+    .WithEnvironment("SWIYU_TMS_OAUTH_TOKEN_URL", SWIYU_TMS_OAUTH_TOKEN_URL)
+    .WithEnvironment("SWIYU_TMS_OAUTH_CLIENT_ID", SWIYU_TMS_OAUTH_CLIENT_ID)
+    .WithEnvironment("SWIYU_TMS_OAUTH_CLIENT_SECRET", SWIYU_TMS_OAUTH_CLIENT_SECRET)
+    .WithEnvironment("SWIYU_TMS_BOOTSTRAP_REFRESH_TOKEN", SWIYU_TMS_BOOTSTRAP_REFRESH_TOKEN)
+
+    .WithEnvironment("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI", SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI)
     .WithEnvironment("VERIFICATION_EXPIRY_MUST_BE_PRESENT", "false")
     .WithHttpEndpoint(port: 8084, targetPort: 8080, name: HTTP);  // local development
     //.WithHttpEndpoint(port: 80, targetPort: 8080, name: HTTP);  // for deployment 
@@ -77,12 +98,14 @@ identityProvider = builder.AddProject<Projects.Idp_Swiyu_IdentityProvider>(IDENT
     .WithReference(cache)
     .WaitFor(cache)
     .WithEnvironment("SwiyuVerifierMgmtUrl", swiyuVerifier.GetEndpoint(HTTP))
-    .WithEnvironment("SwiyuOid4vpUrl", verifierExternalUrl)
-    .WithEnvironment("ISSUER_ID", issuerId)
+    .WithEnvironment("SwiyuOid4vpUrl", VERIFIER_EXTERNAL_URL)
+    .WithEnvironment("ISSUER_ID", ISSUER_ID)
     .WithEnvironment("SwiyuManagementClientId", swiyuManagementClientId)
     .WithEnvironment("SwiyuManagementClientSecretEntra", swiyuManagementClientSecretEntra)
     .WithEnvironment("SwiyuManagementAuthority", swiyuManagementAuthority)
     .WithEnvironment("SwiyuManagementScope", swiyuManagementScope)
+    .WithEnvironment("WebClientUrl", webClientUrl)
+    .WithEnvironment("WebOidcAuthority", webOidcAuthority)
     .WithEnvironment("WebClientUrl", webClientUrl)
     .WaitFor(swiyuVerifier)
     .WaitFor(swiyuProxy);
