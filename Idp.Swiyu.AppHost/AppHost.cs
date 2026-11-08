@@ -105,8 +105,6 @@ identityProvider = builder.AddProject<Projects.Idp_Swiyu_IdentityProvider>(IDENT
     .WithEnvironment("SwiyuManagementAuthority", swiyuManagementAuthority)
     .WithEnvironment("SwiyuManagementScope", swiyuManagementScope)
     .WithEnvironment("WebClientUrl", webClientUrl)
-    .WithEnvironment("WebOidcAuthority", webOidcAuthority)
-    .WithEnvironment("WebClientUrl", webClientUrl)
     .WaitFor(swiyuVerifier)
     .WaitFor(swiyuProxy);
 
